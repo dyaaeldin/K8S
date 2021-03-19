@@ -1,0 +1,57 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: 
+  labels: 
+    app: 
+spec:
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: backend-staging
+  template:
+    metadata:
+      labels:
+        app: backend-staging
+    spec:
+      containers:
+      - env:
+        - name: NODE_ENV
+          value: staging
+        - name: MONGO_URL
+          valueFrom:
+            secretKeyRef:
+              key: url
+              name: URL
+        image: 
+        imagePullPolicy: Always
+        name: 
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        volumeMounts:
+        - mountPath: /app/server/containers
+          name: assets-staging
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+      - name: regcred
+      initContainers:
+      - command:
+        - /bin/chown
+        - -R
+        - "1000"
+        - /data
+        image: busybox
+        imagePullPolicy: Always
+        name: fix
+        volumeMounts:
+        - mountPath: /data
+          name: assets-staging
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      volumes:
+      - name: assets-staging
+        persistentVolumeClaim:
+          claimName: backend-staging
