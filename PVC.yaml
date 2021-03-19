@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: $NAME
+  labels:
+    name: 
+spec:
+  accessModes:
+  - $ACCESS_MODE
+  resources:
+    requests:
+      storage: $SIZEGi
+  storageClassName: $STORAGE_CLASS_NAME
+
