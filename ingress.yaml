@@ -1,0 +1,18 @@
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: 
+  labels:
+     name: 
+spec:
+  rules:
+  - host: $URL
+    http:
+      paths:
+      - backend:
+          serviceName: $SERVICE
+          servicePort: 3000
+  tls:
+  - hosts:
+    - $URL
+    secretName: $TLS_SECRET
